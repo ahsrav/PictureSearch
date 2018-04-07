@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Picture Search</string>
+    <string name="search">Search</string>
+    <string name="search_box_hint">Enter search text in french</string>
+</resources>

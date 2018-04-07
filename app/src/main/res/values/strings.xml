@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Picture Search</string>
+    <string name="search">Search</string>
+    <string name="search_box_hint">Enter search text</string>
+</resources>
