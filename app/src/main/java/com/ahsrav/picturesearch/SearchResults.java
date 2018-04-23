@@ -2,6 +2,8 @@ package com.ahsrav.picturesearch;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.ahsrav.picturesearch.models.ImageList;
@@ -29,9 +31,10 @@ public class SearchResults extends AppCompatActivity {
     private void getData(String searchText) {
         //https://pixabay.com/api/?key=8676171-014b260fab275b497c9fd8142&q=kittens&per_page=5&image_type=photo
         Map<String, String> parameters = new HashMap<>();
+        Log.e("SearchResults", "searchText: " + searchText);
         parameters.put("key", "8676171-014b260fab275b497c9fd8142");
         parameters.put("q", searchText);
-        parameters.put("per_page", "5");
+        parameters.put("per_page", "60");
 
         RetrofitClient
                 .getPixabayService()
@@ -39,7 +42,7 @@ public class SearchResults extends AppCompatActivity {
                 .enqueue(new Callback<ImageList>() {
                     @Override
                     public void onResponse(Call<ImageList> call, Response<ImageList> response) {
-
+                        createRecyclerView(response.body());
                         Log.i("SearchResults", response.body().toString());
                     }
 
@@ -48,5 +51,15 @@ public class SearchResults extends AppCompatActivity {
                         Log.e("SearchResults", t.getMessage());
                     }
                 });
+    }
+
+    private void createRecyclerView(ImageList imageList) {
+        RecyclerView imagesRecyclerView = findViewById(R.id.images_recycler_view);
+
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, getResources().getInteger(R.integer.num_images_per_row));
+        imagesRecyclerView.setLayoutManager(layoutManager);
+
+        RecyclerView.Adapter adapter = new ImageGridAdapter(imageList);
+        imagesRecyclerView.setAdapter(adapter);
     }
 }

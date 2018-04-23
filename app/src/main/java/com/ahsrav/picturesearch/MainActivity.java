@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
         submitButton.setEnabled(false);
 
-        EditText searchBox = findViewById(R.id.search_box);
+        final EditText searchBox = findViewById(R.id.search_box);
         searchBox.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent searchResultsIntent = new Intent(getApplicationContext(), SearchResults.class);
-                searchResultsIntent.putExtra(SEARCH_TEXT_EXTRA, submitButton.getText());
+                searchResultsIntent.putExtra(SEARCH_TEXT_EXTRA, searchBox.getText().toString());
                 startActivity(searchResultsIntent);
             }
         });
