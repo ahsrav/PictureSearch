@@ -13,9 +13,11 @@ import java.net.URI;
 
 class ImageGridAdapter extends RecyclerView.Adapter {
     private ImageList imageList;
+    private InfiniteScrollCallback infiniteScrollCallback;
 
-    public ImageGridAdapter(ImageList imageList) {
+    public ImageGridAdapter(InfiniteScrollCallback infiniteScrollCallback) {
         this.imageList = imageList;
+        this.infiniteScrollCallback = infiniteScrollCallback;
     }
 
 
@@ -35,10 +37,25 @@ class ImageGridAdapter extends RecyclerView.Adapter {
         String url = imageList.hits.get(position).previewURL;
         Uri uri = Uri.parse(url);
         ((ImageViewHolder) holder).imageView.setImageURI(uri);
+
+        if (position == imageList.hits.size() - 1) {
+            infiniteScrollCallback.reachedBottom();
+        }
+    }
+
+    public void setImageList(ImageList newImageList) {
+        this.imageList = newImageList;
+    }
+
+    public void addToHits(ImageList newImageList) {
+        imageList.hits.addAll(newImageList.hits);
     }
 
     @Override
     public int getItemCount() {
+        if (imageList == null) {
+            return 0;
+        }
         return imageList.hits.size();
     }
 
@@ -50,5 +67,9 @@ class ImageGridAdapter extends RecyclerView.Adapter {
             super(itemView);
             imageView = itemView.findViewById(R.id.fresco_image);
         }
+    }
+
+    public interface InfiniteScrollCallback {
+        void reachedBottom();
     }
 }
